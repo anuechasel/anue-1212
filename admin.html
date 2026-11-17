@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>鉅亨1212 活動後台</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F6F7F9;color:#0B1220;font-family:'Noto Sans TC',system-ui,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:24px}
+header{background:linear-gradient(90deg,#A80F08,#E2301C);color:#fff;border-bottom:3px solid #FFC93C}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
+h1{margin:0;font-size:20px}
+.gold{color:#FFD84D}
+.card{background:#fff;border:1px solid #E6EAF0;border-radius:14px;padding:18px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.kpi .n{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1.1}
+.kpi .l{font-size:13px;color:#475467}
+.btn{min-height:40px;padding:0 16px;border-radius:10px;border:0;font:inherit;font-weight:700;cursor:pointer}
+.red{background:#C8170F;color:#fff}.red:hover{filter:brightness(1.08)}
+.ghost{background:#fff;border:1px solid #D0D5DD;color:#344054}
+input[type=password],input[type=text]{min-height:40px;padding:0 12px;border:1px solid #98A2B3;border-radius:10px;font:inherit}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 8px;border-bottom:1px solid #EEF2F6;text-align:left;white-space:nowrap}
+th{font-size:12px;color:#475467;font-weight:500;background:#F9FAFB}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.t-已配發{background:#FFF4E0;color:#8A5A00}.t-已付款{background:#E7F6EC;color:#12703A}.t-逾時{background:#F2F4F7;color:#475467}
+.bar{height:8px;background:#EEF2F6;border-radius:999px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.muted{color:#475467;font-size:13px}
+.scroll{overflow-x:auto}
+.hidden{display:none !important}
+.err{color:#B42318;font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1><span class="gold">鉅亨1212</span> 活動後台</h1>
+  <div class="muted" style="color:#FFE7DF" id="meta"></div>
+</div></header>
+
+<div class="wrap">
+  <form id="login" class="card" style="max-width:420px;margin:40px auto;display:flex;flex-direction:column;gap:12px">
+    <b>請輸入後台密碼</b>
+    <input id="key" type="password" autocomplete="current-password" placeholder="後台密碼">
+    <button class="btn red" type="submit">進入後台</button>
+    <p id="loginErr" class="err hidden"></p>
+  </form>
+
+  <div id="app" class="hidden" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+      <div class="muted" id="updated"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn ghost" id="refresh" type="button">重新整理</button>
+        <button class="btn red" id="sendRedeem" type="button">寄送兌換信給已付款者</button>
+        <button class="btn ghost" id="logout" type="button">登出</button>
+      </div>
+    </div>
+
+    <div class="grid" id="kpis"></div>
+
+    <div class="card">
+      <b>今日各方案名額</b>
+      <p class="muted" style="margin:4px 0 12px">搶到後 30 分鐘未付款會自動標記「逾時」，並啟用一條備用連結給下一位。</p>
+      <div class="scroll"><table id="sumTable"></table></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+        <b>得獎與付款名單</b>
+        <input id="filter" type="text" placeholder="搜尋 Email 或方案">
+      </div>
+      <div class="scroll"><table id="claimTable"></table></div>
+    </div>
+    <p id="appErr" class="err hidden"></p>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwXaiQlDZOct9F5SG3ge6CrO8D9GbFrlaykbWCy3oKAJ6D6Ozrx91Bd0fi0vWrosySc/exec';
+const $ = (id) => document.getElementById(id);
+let KEY = sessionGet('anue1212_admin') || '';
+let DATA = null;
+
+function sessionGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+function sessionSet(k, v) { try { v ? sessionStorage.setItem(k, v) : sessionStorage.removeItem(k); } catch (e) {} }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+async function call(payload) {
+  const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ key: KEY }, payload)) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function load() {
+  $('appErr').classList.add('hidden');
+  $('updated').textContent = '載入中…';
+  try {
+    const r = await call({ action: 'admin' });
+    if (!r.ok) throw new Error(r.msg || '讀取失敗');
+    DATA = r; render();
+  } catch (e) {
+    if (String(e.message).includes('密碼')) { logout(e.message); return; }
+    $('appErr').textContent = '讀取失敗：' + e.message; $('appErr').classList.remove('hidden');
+  }
+}
+
+function render() {
+  const d = DATA, s = d.summary;
+  $('meta').textContent = (d.testMode ? '測試模式（不限時間）・' : '') + '今日 ' + d.today;
+  $('updated').textContent = '最後更新：' + new Date().toLocaleTimeString('zh-TW');
+  let claimed = 0, paid = 0, expired = 0;
+  Object.keys(s).forEach((k) => { claimed += s[k].claimed; paid += s[k].paid; expired += s[k].expired; });
+  const k = [['登記 Email 數', d.registrations], ['待付款（30 分鐘內）', claimed], ['已付款', paid], ['逾時釋出', expired]];
+  $('kpis').innerHTML = k.map(([l, n]) => `<div class="card kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+  $('sumTable').innerHTML = '<tr><th>方案</th><th>正式名額</th><th>可搶</th><th>待付款</th><th>已付款</th><th>逾時</th><th>剩餘備用</th><th style="width:30%">進度</th></tr>' +
+    Object.keys(s).map((key) => {
+      const x = s[key], t = Math.max(1, x.total);
+      return `<tr><td><b>${esc(x.name)}</b></td><td>${x.total}</td><td>${x.open}</td><td>${x.claimed}</td><td>${x.paid}</td><td>${x.expired}</td><td>${x.backup}</td>
+        <td><div class="bar"><i style="width:${x.paid / t * 100}%;background:#12703A"></i><i style="width:${x.claimed / t * 100}%;background:#F2B400"></i><i style="width:${x.expired / t * 100}%;background:#98A2B3"></i></div></td></tr>`;
+    }).join('');
+  renderClaims();
+}
+
+function renderClaims() {
+  const q = $('filter').value.trim().toLowerCase();
+  const rows = (DATA.claims || []).filter((c) => !q || (c.email + c.prize).toLowerCase().includes(q));
+  $('claimTable').innerHTML = '<tr><th>時間</th><th>日期</th><th>方案</th><th>Email</th><th>狀態</th><th>剩餘時間</th><th>已付款</th><th>兌換信</th></tr>' +
+    (rows.length ? rows.map((c) => `<tr>
+      <td>${esc(c.time)}</td><td>${esc(c.date)}</td><td>${esc(c.prize)}</td><td>${esc(c.email)}</td>
+      <td><span class="tag t-${esc(c.status)}">${esc(c.status)}</span></td>
+      <td>${c.minutesLeft == null ? '—' : c.minutesLeft + ' 分'}</td>
+      <td>${c.code === 'trial' ? '—' : `<input type="checkbox" data-row="${c.row}" ${c.paid ? 'checked' : ''} aria-label="標記已付款">`}</td>
+      <td>${c.sent ? '已寄' : '—'}</td></tr>`).join('') : '<tr><td colspan="8" class="muted">目前沒有資料</td></tr>');
+}
+
+$('claimTable').addEventListener('change', async (e) => {
+  const cb = e.target.closest('input[data-row]');
+  if (!cb) return;
+  cb.disabled = true;
+  try {
+    const r = await call({ action: 'adminMarkPaid', row: Number(cb.dataset.row), paid: cb.checked });
+    if (!r.ok) throw new Error(r.msg);
+    await load();
+  } catch (err) { cb.checked = !cb.checked; $('appErr').textContent = '更新失敗：' + err.message; $('appErr').classList.remove('hidden'); }
+  finally { cb.disabled = false; }
+});
+$('sendRedeem').addEventListener('click', async () => {
+  const b = $('sendRedeem'); b.disabled = true; b.textContent = '寄送中…';
+  try { const r = await call({ action: 'adminSendRedeem' }); b.textContent = r.ok ? `已寄出 ${r.sent} 封` : (r.msg || '失敗'); await load(); }
+  catch (e) { b.textContent = '寄送失敗'; }
+  setTimeout(() => { b.disabled = false; b.textContent = '寄送兌換信給已付款者'; }, 2500);
+});
+$('refresh').addEventListener('click', load);
+$('filter').addEventListener('input', () => DATA && renderClaims());
+$('logout').addEventListener('click', () => logout());
+$('login').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  KEY = $('key').value.trim();
+  const r = await call({ action: 'admin' }).catch(() => ({ ok: false, msg: '連線失敗' }));
+  if (!r.ok) { $('loginErr').textContent = r.msg || '密碼錯誤'; $('loginErr').classList.remove('hidden'); return; }
+  sessionSet('anue1212_admin', KEY); show(); DATA = r; render();
+});
+function show() { $('login').classList.add('hidden'); $('app').classList.remove('hidden'); }
+function logout(msg) { KEY = ''; sessionSet('anue1212_admin', ''); $('app').classList.add('hidden'); $('login').classList.remove('hidden'); if (msg) { $('loginErr').textContent = msg; $('loginErr').classList.remove('hidden'); } }
+if (KEY) { show(); load(); }
+setInterval(() => { if (KEY && !document.hidden) load(); }, 60000);
+</script>
+</body>
+</html>

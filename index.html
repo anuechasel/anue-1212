@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>限定雙12 破盤下殺｜鉅亨網</title>
-<meta name="description" content="鉅亨1212優惠大活動：贏指標一年／半年方案 $1,212、鉅亨無廣告 $121、杜金龍講座 $1,212。12/7–12/11 每天中午 12:00 限量開搶。">
+<meta name="description" content="鉅亨1212優惠大活動：鉅亨贏指標一年／半年方案 $1,212、鉅亨 Premium+ 加值服務 $121、鉅樂部講座（杜金龍）$1,212。12/7–12/11 每天中午 12:00 限量開搶。">
 <meta property="og:title" content="限定雙12 破盤下殺大優惠！｜鉅亨網">
-<meta property="og:description" content="贏指標 $1,212、鉅亨無廣告 $121，12/7–12/11 每天中午 12:00 限量開搶。">
+<meta property="og:description" content="鉅亨贏指標 $1,212、鉅亨 Premium+ $121、鉅樂部講座 $1,212，12/7–12/11 每天中午 12:00 限量開搶。">
 <meta property="og:type" content="website">
 <link rel="icon" id="favicon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,6 +87,9 @@ h1{margin:0;font-size:clamp(32px,4.4vw,52px);line-height:1.15;font-weight:900}
 .cat.red{color:#B42E12;background:#FFF1EC;border:1px solid #F3C9BE}
 .cat.teal{color:#0B5566;background:#EAF6F9;border:1px solid #BFE3EC}
 .cat.dark{color:#fff;background:var(--ink)}
+.pimg{border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#192648,#111E3F);display:flex;justify-content:center;align-items:flex-end;height:200px;padding-top:12px}
+.pimg img{height:100%;width:auto;display:block}
+.pimg.wide{height:auto;padding:0;background:#111}.pimg.wide img{width:100%;height:auto}
 .limited{font-family:'JetBrains Mono',monospace;font-size:12px;color:#B42E12;border:1px solid #F3C9BE;padding:3px 8px;border-radius:6px}
 .orig{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--muted)}
 .orig del{position:relative;display:inline-block;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#667085;padding:0 6px}
@@ -150,7 +153,7 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
         <span class="mono" style="font-size:13px;color:var(--muted)">2026.12.07 — 12.11 ／ 每天 12:00 開搶</span>
       </div>
       <h1>限定雙12<br><span style="color:#D2381A">破盤下殺大優惠！</span></h1>
-      <p style="margin:0;font-size:18px;line-height:1.7;color:#344054;max-width:600px">贏指標一年、半年方案只要 <b>1212 元</b>，鉅亨無廣告只要 <b>121 元</b>，杜金龍講座 <b>1212 元</b>入場。連續 5 天、每天中午 12 點限量開搶。</p>
+      <p style="margin:0;font-size:18px;line-height:1.7;color:#344054;max-width:600px">鉅亨贏指標一年、半年方案只要 <b>1212 元</b>，鉅亨 Premium+ 加值服務只要 <b>121 元</b>，鉅樂部講座（杜金龍 12/19 線上講座）<b>1212 元</b>參加。連續 5 天、每天中午 12 點限量開搶。</p>
       <div style="display:flex;flex-direction:column;gap:12px">
         <b id="cdLabel" style="font-size:15px">距離開搶</b>
         <div class="cd" id="cd" role="timer" aria-live="off">
@@ -215,7 +218,7 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
 <section id="deals" class="wrap" style="padding-top:56px;padding-bottom:56px">
   <span class="kicker">02 ／ FLASH DEALS</span>
   <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:32px">
-    <div><h2 class="sec">每日限量搶購</h2><p style="margin:0;font-size:17px;color:var(--muted)">每天 12:00 名額重置。搶到後倒數 <b style="color:var(--ink)">30 分鐘</b>內完成結帳，逾時名額釋出。</p></div>
+    <div><h2 class="sec">每日限量搶購</h2><p style="margin:0;font-size:17px;color:var(--muted)">每天 12:00 名額重置。搶到後倒數 <b style="color:var(--ink)">30 分鐘</b>內完成結帳，逾時視同放棄、不補發。</p></div>
     <span id="dealDay" class="mono" style="font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:#fff"></span>
   </div>
   <div id="needEmail" class="alert hidden" role="alert"><span>請先輸入 Email 並勾選同意，才能參加搶購喔！</span><a href="#signup" style="font-weight:700;color:#B42E12">前往輸入 Email ↑</a></div>
@@ -223,7 +226,7 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
   <div id="trialBox" class="trial hidden">
     <div style="flex:999 1 420px;min-width:0">
       <span class="tag-red">安慰獎 ／ 沒搶到專屬</span>
-      <h3 style="margin:10px 0 8px;font-size:24px;font-weight:900">沒搶到別走！贏指標・鉅亨無廣告 免費試用一個月</h3>
+      <h3 style="margin:10px 0 8px;font-size:24px;font-weight:900">沒搶到別走！鉅亨贏指標・鉅亨 Premium+ 免費試用一個月</h3>
       <p style="margin:0;font-size:15px;color:var(--muted)">數量有限，領完為止。領取後兌換方式將寄到你的信箱。</p>
     </div>
     <button id="trialBtn" class="btn btn-red" type="button" style="min-height:52px;padding:0 28px">免費領取</button>
@@ -249,10 +252,10 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
   <ul class="rules">
     <li>活動期間：2026 年 12 月 7 日（一）至 12 月 11 日（五），每天中午 12:00 開搶，名額搶完為止。</li>
     <li>參加搶購前須先輸入 Email 並同意個資蒐集，得獎通知與付款連結將寄送至該信箱。</li>
-    <li>搶到名額後須於 30 分鐘內完成結帳，逾時視同放棄，名額將釋出，<b>過期不補發</b>。</li>
+    <li>搶到名額後須於 30 分鐘內完成結帳，逾時視同放棄，名額不再開放，<b>過期不補發</b>。</li>
     <li>每個名額皆為專屬付款連結，每日更新，僅限本人使用，請勿轉傳。</li>
-    <li>杜金龍講座每日限量，完成付款即取得上課資格。</li>
-    <li>未搶到名額者可領取安慰獎：贏指標或鉅亨無廣告免費試用一個月，數量有限，領完為止。</li>
+    <li>鉅樂部講座（杜金龍線上講座 12/19）每日限量，完成付款即取得課程參加資格。</li>
+    <li>未搶到名額者可領取安慰獎：鉅亨贏指標或鉅亨 Premium+ 免費試用一個月，數量有限，領完為止。</li>
     <li>iOS 用戶以兌換連結開通、Android 用戶以兌換序號開通，教學請見通知信。</li>
     <li>鉅亨網保留修改、變更或終止本活動之權利，相關細節以活動頁公告為準。</li>
   </ul>
@@ -270,12 +273,12 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
       <h3 id="mTitle" style="margin:0;font-size:28px;font-weight:900;line-height:1.3"></h3>
       <div id="mPaid" class="hidden" style="display:flex;flex-direction:column;gap:16px">
         <div class="timer"><div style="font-size:14px;color:#8A2A12">請在倒數結束前完成結帳</div><b id="mTime" role="timer">30:00</b></div>
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#344054">專屬付款連結也已寄到 <b class="mEmail"></b>。超過 30 分鐘未完成結帳，名額將釋出給下一位，過期不補發。</p>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#344054">專屬付款連結也已寄到 <b class="mEmail"></b>。超過 30 分鐘未完成結帳，名額即失效，過期不補發。</p>
         <p id="mRedirect" style="margin:0;font-size:15px;font-weight:700;color:#C8170F;text-align:center"></p>
         <a id="mPay" class="btn btn-red" href="#" style="min-height:52px;font-size:18px">馬上結帳</a>
       </div>
       <div id="mMiss" class="hidden" style="display:flex;flex-direction:column;gap:12px">
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#344054">今日名額已被搶完，別灰心！送你 <b>贏指標・鉅亨無廣告 免費試用一個月</b>，明天中午 12:00 還有新一輪名額。</p>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#344054">今日名額已被搶完，別灰心！送你 <b>鉅亨贏指標・鉅亨 Premium+ 免費試用一個月</b>，明天中午 12:00 還有新一輪名額。</p>
         <button id="mTrialBtn" class="btn btn-red" type="button" style="min-height:52px;font-size:18px">免費領取試用一個月</button>
         <button class="btn btn-ghost" type="button" data-close style="font-weight:500">明天 12:00 再來搶</button>
       </div>
@@ -303,7 +306,7 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:s
           <li>個人資料利用地區：鉅亨金融科技（股）公司營運地區及網站服務提供範圍（含國際傳輸）。</li>
           <li>利用對象及方式：您的個人資料將由鉅亨金融科技（股）公司在蒐集目的之關聯範圍內予以利用（包括但不限於交付合作廠商及郵寄單位、運送公司於蒐集目的範圍內處理及利用）。</li>
           <li>您享有個資法第3條之權利：查詢或請求閱覽、請求製給複製本、請求補充或更正、請求停止蒐集、處理或利用、請求刪除。</li>
-          <li>您可聯絡鉅亨網股份有限公司（客服信箱：wealth@anuegroup.com.tw）或洽鉅樂部小秘書LINE官方帳號（ID：@418buicu），為您處理。若您未能提供個人資料，將無法參加本活動。</li>
+          <li>您可聯絡鉅亨金融科技（股）公司（客服信箱：wealth@anuegroup.com.tw）或洽鉅樂部小秘書LINE官方帳號（ID：@418buicu），為您處理。若您未能提供個人資料，將無法參加本活動。</li>
           <li>鉅亨金融科技（股）公司保留本活動內容修改、變更或終止之最終決定權。</li>
         </ol>
       </div>
@@ -330,11 +333,11 @@ const CONFIG = {
 };
 
 const PRIZES = [
-  { id: 'wy1', cat: '贏指標', tone: 'red',  name: '贏指標 一年方案',     note: '台股看盤決策工具，一次用滿一整年。', price: 1212, orig: 4590 },
-  { id: 'wy6', cat: '贏指標', tone: 'red',  name: '贏指標 半年方案',     note: '台股看盤決策工具，半年方案。',       price: 1212, orig: 3480 },
-  { id: 'du',  cat: '講座',   tone: 'dark', name: '杜金龍講座 入場資格', note: '完成付款即可上課。',                 price: 1212, orig: 1999 },
-  { id: 'ad1', cat: '鉅亨無廣告', tone: 'teal', name: '鉅亨無廣告 一年方案', note: '看新聞不被廣告打斷，一年方案。', price: 121, orig: 800 },
-  { id: 'ad6', cat: '鉅亨無廣告', tone: 'teal', name: '鉅亨無廣告 半年方案', note: '看新聞不被廣告打斷，半年方案。', price: 121, orig: 480 }
+  { id: 'wy1', cat: '鉅亨贏指標', tone: 'red', name: '鉅亨贏指標 一年方案', note: '鉅亨APP 台股策略選股決策工具，史上最優惠方案！', img: 'img/wy.webp', price: 1212, orig: 4590 },
+  { id: 'wy6', cat: '鉅亨贏指標', tone: 'red', name: '鉅亨贏指標 半年方案', note: '鉅亨APP 台股策略選股決策工具，史上最優惠方案！', img: 'img/wy.webp', price: 1212, orig: 3480 },
+  { id: 'du',  cat: '鉅樂部講座', tone: 'dark', name: '鉅樂部講座', note: '【杜金龍線上講座｜12/19 課程參加資格】<br>第55個月倒數：台股老先覺 2027第一季作戰地圖', img: 'img/du.webp', wide: true, price: 1212, orig: 1999 },
+  { id: 'ad1', cat: '鉅亨 Premium+', tone: 'teal', name: '鉅亨 Premium+ 加值服務 一年方案', note: '享受一年鉅亨 APP 無廣告閱讀環境，擴充自選股群組 4組 → 8組', img: 'img/ad.webp', price: 121, orig: 800 },
+  { id: 'ad6', cat: '鉅亨 Premium+', tone: 'teal', name: '鉅亨 Premium+ 加值服務 半年方案', note: '享受半年鉅亨 APP 無廣告閱讀環境，擴充自選股群組 4組 → 8組', img: 'img/ad.webp', price: 121, orig: 480 }
 ];
 
 /* ========================================================= */
@@ -473,6 +476,7 @@ function renderCards() {
     else if (live) { label = state.email ? '立即搶購' : '輸入 Email 後搶購'; cls = 'btn-red'; dis = ''; }
     return `<article class="card">
       <div style="display:flex;justify-content:space-between;align-items:center"><span class="cat ${p.tone}">${p.cat}</span><span class="limited">每日限量</span></div>
+      <div class="pimg${p.wide ? ' wide' : ''}"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
       <div><h3 style="margin:0 0 6px;font-size:22px;font-weight:900">${p.name}</h3><p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted)">${p.note}</p></div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <div class="orig"><span>原價</span><del aria-label="原價 ${fmt(p.orig)} 元">$${fmt(p.orig)}</del></div>

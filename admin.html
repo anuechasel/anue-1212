@@ -63,7 +63,7 @@ th{font-size:12px;color:#475467;font-weight:500;background:#F9FAFB}
 
     <div class="card">
       <b>今日各方案名額</b>
-      <p class="muted" style="margin:4px 0 12px">搶到後 30 分鐘未付款會自動標記「逾時」，並啟用一條備用連結給下一位。</p>
+      <p class="muted" style="margin:4px 0 12px">付款連結為一次性：搶到即鎖定，30 分鐘內未付款標記「逾時」，名額不再開放（視同售出）。</p>
       <div class="scroll"><table id="sumTable"></table></div>
     </div>
 
@@ -113,12 +113,12 @@ function render() {
   $('updated').textContent = '最後更新：' + new Date().toLocaleTimeString('zh-TW');
   let claimed = 0, paid = 0, expired = 0;
   Object.keys(s).forEach((k) => { claimed += s[k].claimed; paid += s[k].paid; expired += s[k].expired; });
-  const k = [['登記 Email 數', d.registrations], ['待付款（30 分鐘內）', claimed], ['已付款', paid], ['逾時釋出', expired]];
+  const k = [['登記 Email 數', d.registrations], ['待付款（30 分鐘內）', claimed], ['已付款', paid], ['逾時未付款', expired]];
   $('kpis').innerHTML = k.map(([l, n]) => `<div class="card kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-  $('sumTable').innerHTML = '<tr><th>方案</th><th>正式名額</th><th>可搶</th><th>待付款</th><th>已付款</th><th>逾時</th><th>剩餘備用</th><th style="width:30%">進度</th></tr>' +
+  $('sumTable').innerHTML = '<tr><th>方案</th><th>正式名額</th><th>可搶</th><th>待付款</th><th>已付款</th><th>逾時</th><th style="width:30%">進度</th></tr>' +
     Object.keys(s).map((key) => {
       const x = s[key], t = Math.max(1, x.total);
-      return `<tr><td><b>${esc(x.name)}</b></td><td>${x.total}</td><td>${x.open}</td><td>${x.claimed}</td><td>${x.paid}</td><td>${x.expired}</td><td>${x.backup}</td>
+      return `<tr><td><b>${esc(x.name)}</b></td><td>${x.total}</td><td>${x.open}</td><td>${x.claimed}</td><td>${x.paid}</td><td>${x.expired}</td>
         <td><div class="bar"><i style="width:${x.paid / t * 100}%;background:#12703A"></i><i style="width:${x.claimed / t * 100}%;background:#F2B400"></i><i style="width:${x.expired / t * 100}%;background:#98A2B3"></i></div></td></tr>`;
     }).join('');
   renderClaims();
